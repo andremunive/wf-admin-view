@@ -1,0 +1,63 @@
+<aside class="fs-sidebar">
+  <!-- Header -->
+  <div class="fs-brand">
+    <img
+      class="fs-logo"
+      src="/assets/brand/no_name_logo.png"
+      alt="Wolf Fitness"
+    />
+    <span class="fs-title">Wolf Fitness</span>
+  </div>
+
+  <!-- Main nav -->
+  <nav class="fs-nav">
+    <a class="fs-item" routerLink="/app/dashboard" routerLinkActive="active">
+      <span class="fs-icon"><mat-icon>grid_view</mat-icon></span>
+      <span class="fs-label">Dashboard</span>
+    </a>
+
+    <a class="fs-item" routerLink="/app/terceros" routerLinkActive="active">
+      <span class="fs-icon"><mat-icon>person</mat-icon></span>
+      <span class="fs-label">Terceros</span>
+    </a>
+
+    <a class="fs-item" routerLink="/app/wallet" routerLinkActive="active">
+      <span class="fs-icon"><mat-icon>account_balance_wallet</mat-icon></span>
+      <span class="fs-label">Wallet</span>
+    </a>
+
+    <a class="fs-item" routerLink="/app/goals" routerLinkActive="active">
+      <span class="fs-icon"><mat-icon>track_changes</mat-icon></span>
+      <span class="fs-label">Goals</span>
+    </a>
+
+    <a class="fs-item" routerLink="/app/budget" routerLinkActive="active">
+      <span class="fs-icon"><mat-icon>payments</mat-icon></span>
+      <span class="fs-label">Budget</span>
+    </a>
+
+    <a class="fs-item" routerLink="/app/analytics" routerLinkActive="active">
+      <span class="fs-icon"><mat-icon>insights</mat-icon></span>
+      <span class="fs-label">Analytics</span>
+    </a>
+
+    <a class="fs-item" routerLink="/app/settings" routerLinkActive="active">
+      <span class="fs-icon"><mat-icon>settings</mat-icon></span>
+      <span class="fs-label">Settings</span>
+    </a>
+  </nav>
+
+  <div class="fs-spacer"></div>
+
+  <!-- Footer -->
+  <nav class="fs-footer">
+    <a class="fs-item" routerLink="/app/help">
+      <span class="fs-icon"><mat-icon>help</mat-icon></span>
+      <span class="fs-label">Help</span>
+    </a>
+    <a class="fs-item" (click)="(true)">
+      <span class="fs-icon"><mat-icon>logout</mat-icon></span>
+      <span class="fs-label">Log out</span>
+    </a>
+  </nav>
+</aside>

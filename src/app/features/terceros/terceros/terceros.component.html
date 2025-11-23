@@ -1,0 +1,199 @@
+<div class="db-page">
+  <!-- Barra superior -->
+  <header class="db-header mat-elevation-z2">
+    <div class="db-header__search">
+      <mat-icon class="db-header__search-icon">search</mat-icon>
+      <input type="text" placeholder="Search" />
+    </div>
+  </header>
+
+  <!-- Label de filtro activo -->
+  <div class="db-active-filter" *ngIf="selectedRoleId !== null">
+    <span class="db-active-filter__label">
+      Rol: <strong>{{ getActiveRoleLabel() }}</strong>
+    </span>
+    <button
+      class="db-active-filter__remove"
+      (click)="removeFilter()"
+      type="button"
+      aria-label="Eliminar filtro"
+    >
+      <mat-icon class="db-active-filter__icon">close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="db-toolbar">
+    <div class="db-toolbar__left">
+      <h1 class="db-title">Terceros</h1>
+    </div>
+
+    <div class="db-toolbar__right">
+      <button mat-stroked-button (click)="toggleFilters()">
+        <mat-icon>tune</mat-icon>
+        <span>Filter</span>
+      </button>
+
+      <button mat-stroked-button>
+        <mat-icon>ios_share</mat-icon>
+        <span>Export</span>
+      </button>
+
+      <button
+        mat-raised-button
+        (click)="addTerceros()"
+        color="primary"
+        class="db-btn-primary"
+      >
+        <mat-icon>add</mat-icon>
+        <span>Agregar tercero</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Formulario de filtros -->
+  <div
+    class="db-filters"
+    [class.db-filters--expanded]="filtersExpanded"
+    [@slideDown]="filtersExpanded ? 'expanded' : 'collapsed'"
+  >
+    <form class="db-filters__form" (ngSubmit)="applyFilters($event)">
+      <div class="db-filters__field">
+        <mat-form-field appearance="outline">
+          <mat-label>Filtrar por rol</mat-label>
+          <mat-select [(ngModel)]="selectedRoleId" name="role">
+            <mat-option [value]="null">Todos los roles</mat-option>
+            <mat-option *ngFor="let role of roleOptions" [value]="role.value">
+              {{ role.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="db-filters__actions">
+        <button
+          mat-raised-button
+          type="submit"
+          color="primary"
+          class="db-filters__search-btn"
+        >
+          <mat-icon>search</mat-icon>
+          <span>Buscar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+  <!-- Contenido principal -->
+  <section class="db-card mat-elevation-z2">
+    <!-- Tabla -->
+    <div class="db-table-wrapper">
+      <table class="db-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Celular</th>
+            <th>T. Documento</th>
+            <th>N. Documento</th>
+            <th>Tipo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Skeleton Loader -->
+          <ng-container *ngIf="loading">
+            <tr *ngFor="let item of getSkeletonArray()" class="skeleton-row">
+              <td>
+                <div class="skeleton skeleton-text" style="width: 150px"></div>
+              </td>
+              <td>
+                <div class="skeleton skeleton-text" style="width: 120px"></div>
+              </td>
+              <td>
+                <div class="skeleton skeleton-text" style="width: 100px"></div>
+              </td>
+              <td>
+                <div class="skeleton skeleton-text" style="width: 120px"></div>
+              </td>
+              <td>
+                <div class="skeleton skeleton-badge" style="width: 90px"></div>
+              </td>
+            </tr>
+          </ng-container>
+
+          <!-- Filas -->
+          <ng-container *ngIf="!loading">
+            <tr *ngFor="let profile of profiles">
+              <td class="db-cell name-cell" (click)="openProfile(profile)">
+                <span class="db-name">{{ profile.name }}</span>
+              </td>
+              <td>{{ profile.phone }}</td>
+              <td>{{ DocumentTypeId[profile.document_type_id] }}</td>
+              <td>{{ profile.document_number }}</td>
+              <td>
+                <span
+                  class="db-status"
+                  [ngClass]="'db-status--' + UserRoleId[profile.user_role_id]"
+                  >{{ UserRoleId[profile.user_role_id] }}</span
+                >
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginación fake (estática por ahora) -->
+    <footer class="db-pagination">
+      <div class="pagination-bar">
+        <!-- Left: paginación -->
+        <div class="pagination">
+          <button
+            class="pagination__arrow"
+            (click)="goPrevious()"
+            [disabled]="currentPage === 1"
+          >
+            ‹ Previous
+          </button>
+
+          <ng-container *ngFor="let item of pageItems">
+            <!-- Páginas -->
+            <button
+              *ngIf="item !== '...'; else ellipsisTpl"
+              class="pagination__page"
+              [class.pagination__page--active]="item === currentPage"
+              (click)="goToPage(item)"
+            >
+              {{ item | number : "2.0" }}
+              <!-- para 01, 02, 03 -->
+            </button>
+          </ng-container>
+
+          <ng-template #ellipsisTpl>
+            <span class="pagination__dots">…</span>
+          </ng-template>
+
+          <button
+            class="pagination__arrow"
+            (click)="goNext()"
+            [disabled]="currentPage === totalPages"
+          >
+            Next ›
+          </button>
+        </div>
+
+        <!-- Right: dropdown "Showing 10" -->
+        <div class="page-size">
+          <span class="page-size__label">Mostrando</span>
+          <select
+            class="page-size__select"
+            [(ngModel)]="pageSize"
+            (change)="onPageSizeChange($event)"
+          >
+            <option *ngFor="let size of pageSizeOptions" [value]="size">
+              {{ size }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </footer>
+  </section>
+</div>

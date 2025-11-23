@@ -1,0 +1,75 @@
+<div class="login-bg">
+  <div class="auth-surface">
+    <!-- Columna izquierda: ilustración -->
+    <section class="auth-illustration">
+      <!-- 🖼️ LOGO (pon tu archivo) -->
+      <div class="brand">
+        <img
+          class="brand__logo"
+          src="assets/brand/no_name_logo.png"
+          alt="Wolf Fitness"
+        />
+        <span class="brand__name">WOLF FITNESS</span>
+      </div>
+    </section>
+
+    <!-- Columna derecha: formulario -->
+    <section class="auth-form">
+      <header class="auth-form__top">
+        <span class="muted">Acceso administrativo</span>
+        <!-- Si quisieras un botón "Sign in" arriba, puedes colocarlo aquí -->
+      </header>
+
+      <div class="auth-form__content">
+        <h1 class="title">¡Bienvenido!</h1>
+        <p class="subtitle">Inicia sesión para continuar</p>
+
+        <form
+          class="form"
+          novalidate
+          [formGroup]="form"
+          (ngSubmit)="onSubmit()"
+        >
+          <mat-form-field appearance="outline" class="field">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              type="email"
+              placeholder="tu@correo.com"
+              formControlName="email"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="field">
+            <mat-label>Contraseña</mat-label>
+            <input
+              matInput
+              [type]="hide ? 'password' : 'text'"
+              placeholder="5+ caracteres"
+              formControlName="password"
+            />
+
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="hide = !hide"
+            >
+              <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <button
+            mat-raised-button
+            color="primary"
+            class="cta"
+            type="submit"
+            [disabled]="isSubmitting || form.invalid"
+          >
+            {{ isSubmitting ? "Ingresando…" : "Login" }}
+          </button>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>

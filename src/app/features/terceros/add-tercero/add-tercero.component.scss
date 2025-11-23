@@ -1,0 +1,35 @@
+.close-modal {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 10px 10px 0 0;
+}
+.modal-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.close-btn {
+  margin: -8px;
+}
+
+.modal-body {
+  padding-top: 10px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 10px;
+}
+
+.step-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

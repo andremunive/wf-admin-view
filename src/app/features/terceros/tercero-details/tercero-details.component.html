@@ -1,0 +1,166 @@
+<div class="details-container">
+  <div class="title">
+    <button
+      mat-icon-button
+      class="back-button"
+      (click)="goBack()"
+      aria-label="Volver"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span>Información general</span>
+    <mat-divider class="divider"></mat-divider>
+  </div>
+
+  <section class="user-info-container mat-elevation-z2">
+    <div class="general-info">
+      <!-- Skeleton Loader -->
+      <ng-container *ngIf="loading">
+        <div class="skeleton skeleton-icon"></div>
+        <div
+          class="skeleton skeleton-text"
+          style="width: 120px; margin-top: 8px"
+        ></div>
+        <div
+          class="skeleton skeleton-text"
+          style="width: 100px; margin-top: 8px"
+        ></div>
+      </ng-container>
+      <!-- Contenido real -->
+      <ng-container *ngIf="!loading">
+        <span class="fs-icon"><mat-icon>person</mat-icon></span>
+        <span class="name">{{ tercero?.name }}</span>
+        <span class="role">{{
+          tercero && tercero.user_role_id
+            ? UserRoleId[tercero.user_role_id]
+            : ""
+        }}</span>
+      </ng-container>
+    </div>
+    <mat-divider class="vertical-divider"></mat-divider>
+    <div class="user-specific-info">
+      <!-- Skeleton Loader del formulario -->
+      <ng-container *ngIf="loading">
+        <div class="form-skeleton">
+          <div class="form-grid">
+            <div
+              class="skeleton skeleton-field"
+              *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+            ></div>
+          </div>
+          <div class="form-actions">
+            <div class="skeleton skeleton-button" style="width: 80px"></div>
+          </div>
+        </div>
+      </ng-container>
+      <!-- Formulario real -->
+      <form [formGroup]="terceroForm" class="tercero-form" *ngIf="!loading">
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Género</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="Masculino">Masculino</mat-option>
+              <mat-option value="Femenino">Femenino</mat-option>
+              <mat-option value="No aplica">No aplica</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha de nacimiento</mat-label>
+            <input matInput type="date" formControlName="birth_date" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de documento</mat-label>
+            <mat-select formControlName="document_type_id">
+              <mat-option [value]="DocumentTypeId.CC.toString()"
+                >Cédula</mat-option
+              >
+              <mat-option [value]="DocumentTypeId.NIT.toString()"
+                >NIT</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Número de documento</mat-label>
+            <input matInput formControlName="document_number" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Dirección</mat-label>
+            <input matInput formControlName="address" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Teléfono</mat-label>
+            <input matInput formControlName="phone" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Rol</mat-label>
+            <mat-select formControlName="user_role_id">
+              <mat-option [value]="UserRoleId.Cliente.toString()"
+                >Cliente</mat-option
+              >
+              <mat-option [value]="UserRoleId.Entrenador.toString()"
+                >Entrenador</mat-option
+              >
+              <mat-option [value]="UserRoleId.Administrador.toString()"
+                >Administrador</mat-option
+              >
+              <mat-option [value]="UserRoleId.Proveedor.toString()"
+                >Proveedor</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            *ngIf="terceroForm.get('user_role_id')?.value === '1'"
+          >
+            <mat-label>Entrenador</mat-label>
+            <mat-select formControlName="trainer_id">
+              <mat-option *ngFor="let trainer of trainers" [value]="trainer.id">
+                {{ trainer.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button
+            *ngIf="!isEditMode"
+            mat-raised-button
+            color="primary"
+            (click)="onEdit()"
+          >
+            Editar
+          </button>
+
+          <div *ngIf="isEditMode" class="edit-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="onSave()"
+              [disabled]="!hasFormChanges() || terceroForm.invalid"
+            >
+              Guardar
+            </button>
+            <button mat-button (click)="onCancel()">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
